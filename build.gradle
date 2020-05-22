@@ -1,12 +1,13 @@
 plugins {
-    id 'org.springframework.boot' version '2.3.0.RELEASE'
+    id 'org.springframework.boot' version '2.2.7.RELEASE'
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
     id 'java'
+    id 'groovy'
 }
 
 group = 'pl.marek-bojdys'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.8'
+sourceCompatibility = '11'
 
 repositories {
     mavenCentral()
