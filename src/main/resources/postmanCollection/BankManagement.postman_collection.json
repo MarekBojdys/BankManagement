@@ -1,0 +1,73 @@
+{
+	"info": {
+		"_postman_id": "8a296300-83e5-4c3d-b7a0-11457d98e3d5",
+		"name": "BankManagement",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Add BankAccount",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/bankAccount/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"bankAccount",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get BankAccount by UUID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Change BankAccount Balance",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/bankAccount/{{uuid}}?operationType=ADD&amount=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"bankAccount",
+						"{{uuid}}"
+					],
+					"query": [
+						{
+							"key": "operationType",
+							"value": "ADD"
+						},
+						{
+							"key": "amount",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
