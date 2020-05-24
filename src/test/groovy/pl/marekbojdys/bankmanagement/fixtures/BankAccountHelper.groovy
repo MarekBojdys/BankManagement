@@ -11,7 +11,7 @@ class BankAccountHelper {
     private static final int INITIAL_AMOUNT = 0
     private static final String TEST_UUID = "123"
 
-    def static getBankAccountFixture(){
+    def static getBankAccountFixture() {
         def bankAccount = new BankAccount()
         bankAccount.setUuid(TEST_UUID)
         bankAccount.setFirstName(TEST_FIRST_NAME)

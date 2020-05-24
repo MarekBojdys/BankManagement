@@ -11,7 +11,7 @@ public class ModelMapperConfig {
 
     @Bean
     @Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
-    public ModelMapper modelMapper(){
+    public ModelMapper modelMapper() {
         return new ModelMapper();
     }
 

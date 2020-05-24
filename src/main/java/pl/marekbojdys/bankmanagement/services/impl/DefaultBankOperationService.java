@@ -26,7 +26,8 @@ public class DefaultBankOperationService implements BankOperationService {
     }
 
     @Override
-    public ChangeBalanceResponseDTO changeBankAccountBalance(final String uuid, final BigDecimal amount, final OperationType operationType) {
+    public ChangeBalanceResponseDTO changeBankAccountBalance(final String uuid, final BigDecimal amount,
+                                                             final OperationType operationType) {
         final BigDecimal standardizedAmount = CurrencyCalcUtil.standardizeAmount(amount);
         if (standardizedAmount.compareTo(new BigDecimal(MINIMAL_AMOUNT)) < 0) {
             throw new BadRequestException(AMOUNT_HAS_TO_BE_MORE_THAN_0);
@@ -58,7 +59,8 @@ public class DefaultBankOperationService implements BankOperationService {
         return operation;
     }
 
-    private ChangeBalanceResponseDTO createChangeBalanceResponseDTO(final String uuid, final OperationType operationType, final BigDecimal actualBalance) {
+    private ChangeBalanceResponseDTO createChangeBalanceResponseDTO(final String uuid, final OperationType operationType,
+                                                                    final BigDecimal actualBalance) {
         final ChangeBalanceResponseDTO changeBalanceResponseDTO = new ChangeBalanceResponseDTO();
         changeBalanceResponseDTO.setUuid(uuid);
         changeBalanceResponseDTO.setOperationType(operationType);

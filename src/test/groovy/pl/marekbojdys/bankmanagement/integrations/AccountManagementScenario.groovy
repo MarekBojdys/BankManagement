@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicReference
 
 @SpringBootTest
 @ActiveProfiles("integration-testing")
-class AccountManagementScenario extends Specification{
+class AccountManagementScenario extends Specification {
 
     private static final String TEST_FIRST_NAME = "testFirstName"
     private static final String TEST_LAST_NAME = "testLastName"
@@ -39,7 +39,7 @@ class AccountManagementScenario extends Specification{
         bankOperationService = new DefaultBankOperationService(bankAccountService)
     }
 
-    def getBankAccount(){
+    def getBankAccount() {
         def newBankAccount = new BankAccount()
         newBankAccount.setFirstName(TEST_FIRST_NAME)
         newBankAccount.setLastName(TEST_LAST_NAME)
@@ -47,7 +47,7 @@ class AccountManagementScenario extends Specification{
         return newBankAccount
     }
 
-    def cleanupChanges(){
+    def cleanupChanges() {
         bankAccountRepository.deleteAll()
     }
 
