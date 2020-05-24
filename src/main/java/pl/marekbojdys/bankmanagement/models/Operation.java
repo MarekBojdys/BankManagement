@@ -1,12 +1,13 @@
 package pl.marekbojdys.bankmanagement.models;
 
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 
-public class OperationHistory {
+public class Operation {
 
     private String operationType;
-    private Integer amount;
+    private BigDecimal amount;
     private OffsetDateTime operationTime;
 
     public String getOperationType() {
@@ -25,11 +26,11 @@ public class OperationHistory {
         this.operationTime = operationTime;
     }
 
-    public Integer getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(final Integer amount) {
+    public void setAmount(final BigDecimal amount) {
         this.amount = amount;
     }
 
@@ -37,7 +38,7 @@ public class OperationHistory {
     public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        final OperationHistory that = (OperationHistory) o;
+        final Operation that = (Operation) o;
         return Objects.equals(operationType, that.operationType) &&
                 Objects.equals(amount, that.amount) &&
                 Objects.equals(operationTime, that.operationTime);

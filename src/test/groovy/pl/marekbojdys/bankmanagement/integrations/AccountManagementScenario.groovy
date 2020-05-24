@@ -7,11 +7,13 @@ import pl.marekbojdys.bankmanagement.enums.OperationType
 import pl.marekbojdys.bankmanagement.models.BankAccount
 import pl.marekbojdys.bankmanagement.repositories.BankAccountRepository
 import pl.marekbojdys.bankmanagement.services.BankAccountService
+import pl.marekbojdys.bankmanagement.services.BankOperationService
 import pl.marekbojdys.bankmanagement.services.impl.DefaultBankAccountService
+import pl.marekbojdys.bankmanagement.services.impl.DefaultBankOperationService
 import spock.lang.Shared
 import spock.lang.Specification
 
-import java.util.concurrent.atomic.AtomicInteger
+import java.util.concurrent.atomic.AtomicReference
 
 @SpringBootTest
 @ActiveProfiles("integration-testing")
@@ -21,9 +23,10 @@ class AccountManagementScenario extends Specification{
     private static final String TEST_LAST_NAME = "testLastName"
     private static final int INITIAL_AMOUNT = 1000
     private static final int UUID_LENGTH = 36
-    private static final int AMOUNT_TO_ADD = 1000
-    private static final int AMOUNT_TO_MINUS = 2000
+    private static final BigDecimal AMOUNT_TO_ADD = new BigDecimal(1000)
+    private static final BigDecimal AMOUNT_TO_MINUS = new BigDecimal(2000)
     private BankAccountService bankAccountService
+    private BankOperationService bankOperationService
 
     @Autowired
     private BankAccountRepository bankAccountRepository
@@ -33,13 +36,14 @@ class AccountManagementScenario extends Specification{
 
     def setup() {
         bankAccountService = new DefaultBankAccountService(bankAccountRepository)
+        bankOperationService = new DefaultBankOperationService(bankAccountService)
     }
 
     def getBankAccount(){
         def newBankAccount = new BankAccount()
         newBankAccount.setFirstName(TEST_FIRST_NAME)
         newBankAccount.setLastName(TEST_LAST_NAME)
-        newBankAccount.setBalance(new AtomicInteger(INITIAL_AMOUNT))
+        newBankAccount.setBalance(new AtomicReference<BigDecimal>(new BigDecimal(INITIAL_AMOUNT)))
         return newBankAccount
     }
 
@@ -78,16 +82,16 @@ class AccountManagementScenario extends Specification{
         def startBalance = bankAccountInDb.getBalance().get()
 
         when: "add 1000 to account balance"
-        bankAccountService.changeBankAccountBalance(uuid, AMOUNT_TO_ADD, OperationType.ADD)
+        def response = bankOperationService.changeBankAccountBalance(uuid, AMOUNT_TO_ADD, OperationType.ADD)
 
         then: "BankAccount balance should by increased by 1000 "
-        def changedBankAccount = bankAccountService.getBankAccount(uuid)
-        startBalance + AMOUNT_TO_ADD == changedBankAccount.getBalance().get()
+        startBalance + AMOUNT_TO_ADD == response.getCurrentBalance()
 
         and: "Operation history is added"
-        changedBankAccount.getOperationHistory().size() == 1
-        changedBankAccount.getOperationHistory().get(0).getOperationType() == OperationType.ADD.getSign()
-        changedBankAccount.getOperationHistory().get(0).getAmount() == AMOUNT_TO_ADD
+        def changedBankAccount = bankAccountService.getBankAccount(uuid)
+        changedBankAccount.getOperationsHistory().size() == 1
+        changedBankAccount.getOperationsHistory().get(0).getOperationType() == OperationType.ADD.getSign()
+        changedBankAccount.getOperationsHistory().get(0).getAmount() == AMOUNT_TO_ADD
     }
 
     def "Minus amount to BankAccount balance"() {
@@ -96,15 +100,15 @@ class AccountManagementScenario extends Specification{
         def startBalance = bankAccountInDb.getBalance().get()
 
         when: "add 1000 to account balance"
-        bankAccountService.changeBankAccountBalance(uuid, AMOUNT_TO_MINUS, OperationType.MINUS)
+        def response = bankOperationService.changeBankAccountBalance(uuid, AMOUNT_TO_MINUS, OperationType.WITHDRAW)
 
         then: "BankAccount balance should by decreased by 2000 "
-        def changedBankAccount = bankAccountService.getBankAccount(uuid)
-        startBalance - AMOUNT_TO_MINUS == changedBankAccount.getBalance().get()
+        startBalance - AMOUNT_TO_MINUS == response.getCurrentBalance()
 
         and: "Operation history is added"
-        changedBankAccount.getOperationHistory().size() == 2
-        changedBankAccount.getOperationHistory().get(1).getOperationType() == OperationType.MINUS.getSign()
-        changedBankAccount.getOperationHistory().get(1).getAmount() == AMOUNT_TO_MINUS
+        def changedBankAccount = bankAccountService.getBankAccount(uuid)
+        changedBankAccount.getOperationsHistory().size() == 2
+        changedBankAccount.getOperationsHistory().get(1).getOperationType() == OperationType.WITHDRAW.getSign()
+        changedBankAccount.getOperationsHistory().get(1).getAmount() == AMOUNT_TO_MINUS
     }
 }

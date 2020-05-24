@@ -7,7 +7,8 @@ import org.springframework.stereotype.Component;
 import pl.marekbojdys.bankmanagement.dtos.BankAccountAddRequestDTO;
 import pl.marekbojdys.bankmanagement.models.BankAccount;
 
-import java.util.concurrent.atomic.AtomicInteger;
+import java.math.BigDecimal;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Component
 public class BankAccountRequestDTOToModelConverter implements Converter<BankAccountAddRequestDTO, BankAccount> {
@@ -22,7 +23,7 @@ public class BankAccountRequestDTOToModelConverter implements Converter<BankAcco
     @Override
     public BankAccount convert(final BankAccountAddRequestDTO source) {
         final BankAccount bankAccount = modelMapper.map(source, BankAccount.class);
-        bankAccount.setBalance(new AtomicInteger(source.getBalance()));
+        bankAccount.setBalance(new AtomicReference<BigDecimal>(source.getBalance()));
         return bankAccount;
     }
 

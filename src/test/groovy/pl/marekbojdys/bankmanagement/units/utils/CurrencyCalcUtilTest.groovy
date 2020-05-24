@@ -4,19 +4,22 @@ package pl.marekbojdys.bankmanagement.units.utils
 import pl.marekbojdys.bankmanagement.utils.CurrencyCalcUtil
 import spock.lang.Specification
 
-class CurrencyCalcUtilTest extends Specification{
+class CurrencyCalcUtilTest extends Specification {
 
-    def "DividedBy100 test" () {
-        when: "The CurrencyCalcUtil runs 'getAmountDividedBy100' method"
-        def result = CurrencyCalcUtil.getAmountDividedBy100(amount)
+    def "Standardize Amount test"() {
+        when: "The CurrencyCalcUtil runs 'standardizeAmount' method"
+        def result = CurrencyCalcUtil.standardizeAmount(amount)
 
         then: "result should be as #expectedResult"
-            result == expectedResult
+        result == expectedResult
+
         where:
-            amount || expectedResult
-            1      || "0.01"
-            11     || "0.11"
-            123    || "1.23"
-            1234   || "12.34"
+            amount                      || expectedResult
+            new BigDecimal("0.011")     || new BigDecimal("0.01")
+            new BigDecimal("1.23")      || new BigDecimal("1.23")
+            new BigDecimal("1.567")     || new BigDecimal("1.56")
+            new BigDecimal("20.123456") || new BigDecimal("20.12")
+            new BigDecimal("1")         || new BigDecimal("1.00")
+            new BigDecimal("1.5")       || new BigDecimal("1.50")
     }
 }

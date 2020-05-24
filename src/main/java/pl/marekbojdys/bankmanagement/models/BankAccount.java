@@ -1,17 +1,19 @@
 package pl.marekbojdys.bankmanagement.models;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class BankAccount {
 
     private String uuid;
     private String firstName;
     private String lastName;
-    private AtomicInteger balance;
-    private List<OperationHistory> operationHistory = new ArrayList<>();
+    private AtomicReference<BigDecimal> balance;
+    private List<Operation> operationsHistory = Collections.synchronizedList(new ArrayList<>());
 
     public String getUuid() {
         return uuid;
@@ -37,20 +39,20 @@ public class BankAccount {
         this.lastName = lastName;
     }
 
-    public AtomicInteger getBalance() {
+    public AtomicReference<BigDecimal> getBalance() {
         return balance;
     }
 
-    public void setBalance(final AtomicInteger balance) {
+    public void setBalance(final AtomicReference<BigDecimal> balance) {
         this.balance = balance;
     }
 
-    public List<OperationHistory> getOperationHistory() {
-        return operationHistory;
+    public List<Operation> getOperationsHistory() {
+        return operationsHistory;
     }
 
-    public void setOperationHistory(final List<OperationHistory> operationHistory) {
-        this.operationHistory = operationHistory;
+    public void setOperationsHistory(final List<Operation> operationsHistory) {
+        this.operationsHistory = operationsHistory;
     }
 
     @Override
@@ -62,11 +64,11 @@ public class BankAccount {
                 Objects.equals(firstName, that.firstName) &&
                 Objects.equals(lastName, that.lastName) &&
                 Objects.equals(balance, that.balance) &&
-                Objects.equals(operationHistory, that.operationHistory);
+                Objects.equals(operationsHistory, that.operationsHistory);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(uuid, firstName, lastName, balance, operationHistory);
+        return Objects.hash(uuid, firstName, lastName, balance, operationsHistory);
     }
 }

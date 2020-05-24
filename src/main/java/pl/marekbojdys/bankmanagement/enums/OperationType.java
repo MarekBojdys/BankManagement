@@ -3,7 +3,7 @@ package pl.marekbojdys.bankmanagement.enums;
 public enum OperationType {
 
     ADD("+"),
-    MINUS("-");
+    WITHDRAW("-");
 
     private String sign;
 

@@ -32,7 +32,17 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": ""
+					"raw": "http://localhost:8080/api/bankAccount/{{uuid}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"bankAccount",
+						"{{uuid}}"
+					]
 				}
 			},
 			"response": []
@@ -43,7 +53,7 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/bankAccount/{{uuid}}?operationType=ADD&amount=1",
+					"raw": "http://localhost:8080/api/bankOperation/{{uuid}}?operationType=ADD&amount=1.00",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -51,7 +61,7 @@
 					"port": "8080",
 					"path": [
 						"api",
-						"bankAccount",
+						"bankOperation",
 						"{{uuid}}"
 					],
 					"query": [
@@ -61,7 +71,7 @@
 						},
 						{
 							"key": "amount",
-							"value": "1"
+							"value": "1.00"
 						}
 					]
 				}
